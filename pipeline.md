@@ -28,14 +28,32 @@ echo 19 | while read i; do awk '$6 == "REF#chr'$i'"' C57BL6J+DBA2J+BXD001+BXD002
 
 5. Ectracted only rows of chr19 from fasta files (on not gzip file)
 
-```shell
+```shell 
 cat id_C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012vsref.chr19.txt | while read line ; do samtools faidx C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_supernova_changeid.fa $line; done > C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa
 ```
 6. pggb pipeline
-```shell
+
+- with s(50 kb) and p95
+```shell  
 ./pggb -i /home/flaviav/C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa.gz -w 30000 -s 50000 -I 0.5 -p 95 -a 90 -n 10 -Y '#' -t 16 -o out
+```
 
-odgi viz -i C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa.gz.pggb-s50000-p95-n10-a90-K16-k8-w30000-j5000-e5000-I0.5.smooth.og -o 10strains-s50000-p95-n10-a90-K16-k8-w30000-j5000-e5000-I0.5sort.Y.R.png -R -s '#' -x 4000 -y 500
+- with s(50 kb) and p99
+```shell  
+./pggb -i /home/flaviav/C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa.gz -w 30000 -s 50000 -I 0.5 -p 99 -a 90 -n 10 -Y '#' -t 16 -o out
+```
+- with s(30 kb) and p99
+```shell 
+./pggb -i /home/flaviav/C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa.gz -s 30000 -p 99 -n 10 -Y '#' -w 30000 -s 50000 -I 0.5 -t 16 -o out
+```
+- with s(10 kb) and p99
+```shell 
+./pggb -i /home/flaviav/C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa.gz -s 10000 -p 99 -n 10 -Y '#' -w 30000 -s 50000 -I 0.5 -t 16 -o out
+```
 
-
+- with s(0.5 kb) and p99
+```shell
 ./pggb -i /home/flaviav/C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa.gz -s 5000 -p 99 -n 10 -Y '#' -w 30000 -s 50000 -I 0.5 -t 16 -o out
+```
+
+
