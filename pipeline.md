@@ -60,9 +60,22 @@ cat id_C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012vsre
 
 - FASTA--> GFA
 ```shell
- python3 convertToGFA.py UCSC_mm10_chr19_only.fa k 16 > UCSC_mm10_chr19_only.gfa
+ python3 convertToGFA.py UCSC_mm10_chr19_only.fa UCSC_mm10_chr19_only.gfa 51
 ```
 
+- I fix up the ID space to make vg happy (it can’t handle node id == 0) and feed the result into vg
 
+```shell
+cat UCSC_mm10_chr19_only.gfa | awk '$1=="L" { $2 +=1 ; $4+=1 } $1=="S" { $2+=1 } { print }' | tr ' ' '\t'| vg view -Fv - > UCSC_mm10_chr19_only.vg
+```
+- to view the graph in GFA format in Bandage 
+```shell
+ vg view UCSC_mm10_chr19_only.vg > UCSC_mm10_chr19_only.+1.gfa
+```
+
+- for index file
+```shell
+vg index UCSC_mm10_chr19_only.vg -x UCSC_mm10_chr19_only.xg
+```
 
 
