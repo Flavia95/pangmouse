@@ -56,4 +56,13 @@ cat id_C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012vsre
 ./pggb -i /home/flaviav/C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa.gz -s 5000 -p 99 -n 10 -Y '#' -w 30000 -s 50000 -I 0.5 -t 16 -o out
 ```
 
+7. In the left of the pangenome there is an unconstructed portion, that seems correspond to the centromeric region, I check this
+
+- FASTA--> GFA
+```shell
+ python3 convertToGFA.py UCSC_mm10_chr19_only.fa k 16 > UCSC_mm10_chr19_only.gfa
+```
+
+
+
 
