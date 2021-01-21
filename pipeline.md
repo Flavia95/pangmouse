@@ -33,49 +33,23 @@ cat id_C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012vsre
 ```
 6. pggb pipeline
 
-- with s(50 kb) and p95
-```shell  
-./pggb -i /home/flaviav/C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa.gz -w 30000 -s 50000 -I 0.5 -p 95 -a 90 -n 10 -Y '#' -t 16 -o out
-```
-
-- with s(50 kb) and p99
-```shell  
-./pggb -i /home/flaviav/C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa.gz -w 30000 -s 50000 -I 0.5 -p 99 -a 90 -n 10 -Y '#' -t 16 -o out
-```
-- with s(30 kb) and p99
-```shell 
-./pggb -i /home/flaviav/C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa.gz -s 30000 -p 99 -n 10 -Y '#' -w 30000 -s 50000 -I 0.5 -t 16 -o out
-```
-- with s(10 kb) and p99
-```shell 
-./pggb -i /home/flaviav/C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa.gz -s 10000 -p 99 -n 10 -Y '#' -w 30000 -s 50000 -I 0.5 -t 16 -o out
-```
-
-- with s(0.5 kb) and p99
 ```shell
 ./pggb -i /home/flaviav/C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa.gz -s 5000 -p 99 -n 10 -Y '#' -w 30000 -s 50000 -I 0.5 -t 16 -o out
 ```
 
-7. In the left of the pangenome there is an unconstructed portion, that seems correspond to the centromeric region, I check this
+In the left of the pangenome there is an unconstructed portion, that seems correspond to the centromeric region, I checked this
 
-- FASTA--> GFA
+- I extracted all sequences IDS of chr19 in the fasta files of ten strains:
 ```shell
- python3 convertToGFA.py UCSC_mm10_chr19_only.fa UCSC_mm10_chr19_only.gfa 51
+zgrep "^>" C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa.gz | cut -d'|' -f3 | cut -d ' ' -f1 > file.txt
 ```
+- For each sequence ID I added the position that correspondes to the centromer (0-3MB) and I obtained a bed file
 
-- I fix up the ID space to make vg happy (it can’t handle node id == 0) and feed the result into vg
-
+- I extracted for each sequence IDs the sequences that correspondes to the centromer..
 ```shell
-cat UCSC_mm10_chr19_only.gfa | awk '$1=="L" { $2 +=1 ; $4+=1 } $1=="S" { $2+=1 } { print }' | tr ' ' '\t'| vg view -Fv - > UCSC_mm10_chr19_only.vg
-```
-- to view the graph in GFA format in Bandage 
-```shell
- vg view UCSC_mm10_chr19_only.vg > UCSC_mm10_chr19_only.+1.gfa
-```
+samtools faidx C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa
 
-- for index file
-```shell
-vg index UCSC_mm10_chr19_only.vg -x UCSC_mm10_chr19_only.xg
+bedtools getfasta -fi C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa -bed centromericregion.bed > 10strainsonlypos
+centro.fa
 ```
-
-
+- I reconstructed the pangenome, it is a zoom of the left of the previous pangenome
