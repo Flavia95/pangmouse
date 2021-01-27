@@ -54,3 +54,13 @@ centro.fa
 ```
 4. I built with pggb the pangenome --> it is a zoom of the left of the previous pangenome and it correpondes to the centromeric region..
 
+
+5. Plot
+
+```R
+myd = read.table("/home/flavia/Desktop/table.txt", header=T)
+p = myd %>% gather(count, value, values:N) %>% ggplot(aes(value, samples, fill = count)) + geom_bar(stat = "identity", width=0.50) + facet_wrap(.~ species)
+p + labs(x="Values") + theme(legend.title = element_blank()) + theme_bw()+ + ylab("Chromosomes") + scale_fill_discrete(name = “Count”, labels = c(“N”, "nucleotides"))
+
+ggsave("/home/flavia/Desktop/Distribution", plot= p, device="png", width = 20, height = 15, units = "cm", dpi = 300)
+```
