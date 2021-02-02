@@ -23,7 +23,9 @@ sort -n -k 11 human-mouse.-m-k29-p75-K-s10000000-l0.paf | awk '{ sum += $11 } EN
 
 https://www.ensembl.org/Homo_sapiens/Location/Synteny?r=17:63992802-64038237;otherspecies=Mus_musculus
 
-I downloaded these sequences--> PRR29 (ENSG00000224383)	17:63998351-64004305	→	Prr29 (ENSMUSG00000009210)	11:106365472-106377558
+I downloaded these sequences:
+
+PRR29 (ENSG00000224383)	17:63998351-64004305	→	Prr29 (ENSMUSG00000009210)	11:106365472-106377558
 
 
 ```shell
@@ -37,10 +39,11 @@ last-dotplot aln.maf algn.png
 
 I Used the coordinates and strand orientation to extract the query and target subsequence and then I aligned these with lastz.
 
-Ex:
-Mouse#chrX	30000000	60000000	-                   # filename: (extractseq_mousefrompaf.bed)
+Ex: #filename: extractseq_mousefrompaf.bed and #filename: extractseq_humanfrompaf.bed
 
-Homosapiens#chr1	44910958	73919870	-             # filename: (extractseq_humanfrompaf.bed)
+Mouse#chrX	30000000	60000000	-                   
+
+Homosapiens#chr1	44910958	73919870	-             
 
 ```shell
 bedtools getfasta -fi mouse/UCSC_mm10_changeid.fa -bed extractseq_mousefrompaf.bed > UCSC_idfrompaf.fa
