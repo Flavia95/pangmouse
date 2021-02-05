@@ -1,8 +1,8 @@
-# Mapping reference of mousevshuman
+# Mapping reference genomes (mouse against human)
 
 Step before starting
 
-- ### I changed IDs of reference sequences:
+- ### I changed IDs of reference genomes:
 
 ```shell
 awk -F "::" '{if($1~">"){gsub(">","");print ">"$2"Mouse#"$1} else {print $0}}' UCSC_mm10.fa | grep -o '^\S*' > UCSC_mm10.fa_changeid.fa
@@ -40,7 +40,7 @@ sort -n -k 11 human-mouse.-m-k29-p75-K-s10000000-l0.paf | awk '{ sum += $11 } EN
 
 ## Possible use of approximate mapping + lastz
 
-1. Taked a single line from the PAF obtained by approximate mapping (wfmash).
+1. Taked a single line from the PAF obtained by the approximate mapping (wfmash).
 
 I Used the coordinates and strand orientation to extract the query and target subsequence and then I aligned these with lastz.
 
@@ -52,6 +52,8 @@ Mouse#chrX	30000000	60000000	-
 
 Homosapiens#chr1	44910958	73919870	-             
 
+2. I extracted the corresponding sequences from the fasta files
+
 ```shell
 bedtools getfasta -fi mouse/UCSC_mm10_changeid.fa -bed extractseq_mousefrompaf.bed > UCSC_idfrompaf.fa
 bedtools getfasta -fi human/GCA_000001405.27_GRCh38.p12_genomic_changeid.fa -bed extractseq_humanfrompaf.bed > GCA_idfrompaf.fa
@@ -59,11 +61,17 @@ bedtools getfasta -fi human/GCA_000001405.27_GRCh38.p12_genomic_changeid.fa -bed
 
 ```shell
 lastz GCA_idfrompaf.fa UCSC_idfrompaf.fa --notransition --step=20 --nogapped --format=maf > aln.maf
+```
+3. I viewed the output using three different methods, the first two don't work very well
+- With last:
+
+```shell
 last-dotplot aln.maf algnChrxandChr1.png
 ```
 
 ![algnChrxandChr1.png](/img/algnChrxandChr1.png)
-or with R
+
+- with the output obtained by lastz, using R:
 
 ```shell
 lastz GCA_idfrompaf.fa UCSC_idfrompaf.fa --notransition --step=20 --nogapped --format=rdotplot >  algnChrxandChr1.txt
@@ -74,14 +82,15 @@ plot(dots,type="l")
 ```
 ![sample.png](/img/sample.png)
 
-or in R with my script: 
-[dotplot.R](script/dotplot.R)
+- with my script using the output obtained by Lastz (algnChrxandChr1.txt) using R:
+ 
+[dotplot.R](script/dotplot.R) Rscript dotplot.R input 
 
 ![alnchrx_chr1.png](/img/alnchrx_chr1.png)
 
 ## I tried with more IDS:
 
-From these bed files:
+- Using the IDs extracted by the PAF file:
 
 [extractseq_humanfrompaf](test/extractseq_humanfrompaf.bed)
 
@@ -92,25 +101,30 @@ bedtools getfasta -fi mouse/UCSC_mm10_changeid.fa -bed extractseq_mousefrompaf.b
 bedtools getfasta -fi human/GCA_000001405.27_GRCh38.p12_genomic_changeid.fa -bed extractseq_humanfrompaf.bed > GCA_idfrompaf.fa
 ```
 
+- Aligment using Lastz:
 
 ```shell
 lastz GCA_idfrompaf.fa[multiple] UCSC_idfrompaf.fa[multiple] --notransition --step=20 --nogapped --format=rdotplot --ambiguous=iupac >  algnmorechrandmorechr.txt
 ```
-Using my [R script](dotplot.R): Rscript dotplot.R input 
+
+- Using my [R script](dotplot.R) for visualized algnmorechrandmorechr.txt
+
+Rscript dotplot.R input 
 
 ![plotaln4seqvs4seq](/img/aln4seqvs4seq.png)
 
 
 2. If you want to align everything against everything:
+
 ```shell
 cat GCA_idfrompaf.fa UCSC_idfrompaf.fa > GCA+UCSC.fa
 lastz GCA+UCSC.fa[multiple] GCA+UCSC.fa[multiple] --step=20 --nogapped  --format=maf > GCA+UCSC.maf #this output is big
 ```
-3. If you want to extract a single region for both references
+3. If you want to extract a single region for both references:
 
-http://emboss.sourceforge.net/apps/cvs/emboss/apps/extractseq.html
+I used it http://emboss.sourceforge.net/apps/cvs/emboss/apps/extractseq.html
 
-The same commands for two references:
+The same commands for two reference genomes:
 
 ```shell
 extractseq
@@ -122,5 +136,7 @@ output sequence(s) [chr1.fasta]:  GCAregion.fa
 ```shell
 lastz GCAregion.fa UCSCregion.fa --step=20 --nogapped --format=maf > alnsameregion.maf 
 last-dotplot alnsameregion.maf sameregionshumanvsmouse.png
-lastz GCAregion.fa UCSCregion.fa --step=20 --nogapped --format=rdotplot > humanvsmousesameregion.txt #forvizwithR. The output is bad, there isn't the same region syntenic share between two species
+lastz GCAregion.fa UCSCregion.fa --step=20 --nogapped --format=rdotplot > humanvsmousesameregion.txt #forvizwithR. 
 ```
+I don't think this makes sense because there is no single (syntenic) region that is the same for both species, even taking into consideration a single chromosome.
+
