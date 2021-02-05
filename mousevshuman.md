@@ -84,7 +84,7 @@ plot(dots,type="l")
  
 [dotplot.R](script/dotplot.R) Rscript dotplot.R input 
 
-![alnchrx_chr1.png](/img/algnChrxandChr1.png)
+![alnchrx_chr1.png](/img/alnchrx_chr1.png)
 
 ## I tried with more IDS:
 
