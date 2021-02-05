@@ -75,27 +75,30 @@ plot(dots,type="l")
 ![sample.png](/img/sample.png)
 
 or in R with my script: 
-[/script/dotplot.R](/script/dotplot.R)
+[dotplot.R](script/dotplot.R)
 
 ![alnchrx_chr1.png](/img/alnchrx_chr1.png)
 
-I tried with more IDS:
-See bed files:
+## I tried with more IDS:
 
-[test](/test/extractseq_humanfrompaf.bed)
-[test](/test/extractseq_mousefrompaf.bed )
+From these bed files:
 
+[extractseq_humanfrompaf](test/extractseq_humanfrompaf.bed)
+
+[extractseqmousefrompaf](test/extractseq_mousefrompaf.bed)
+
+```shell
+bedtools getfasta -fi mouse/UCSC_mm10_changeid.fa -bed extractseq_mousefrompaf.bed > UCSC_idfrompaf.fa
+bedtools getfasta -fi human/GCA_000001405.27_GRCh38.p12_genomic_changeid.fa -bed extractseq_humanfrompaf.bed > GCA_idfrompaf.fa
+```
+
+
+```shell
 lastz GCA_idfrompaf.fa[multiple] UCSC_idfrompaf.fa[multiple] --notransition --step=20 --nogapped --format=rdotplot --ambiguous=iupac >  algnmorechrandmorechr.txt
+```
+Using my [R script](dotplot.R): Rscript dotplot.R input 
 
-Using my R script:
-![aln4seqvs4seq.png](/aln4seqvs4seq.png)
-
-
-
-
-
-
-
+![plotaln4seqvs4seq](/img/aln4seqvs4seq.png)
 
 
 2. If you want to align everything against everything:
@@ -119,5 +122,5 @@ output sequence(s) [chr1.fasta]:  GCAregion.fa
 ```shell
 lastz GCAregion.fa UCSCregion.fa --step=20 --nogapped --format=maf > alnsameregion.maf 
 last-dotplot alnsameregion.maf sameregionshumanvsmouse.png
-lastz GCA_pariamm.fa UCSC_pariamm.fa --step=20 --nogapped --format=rdotplot > humanvsmousesameregion.txt #forvizwithR
+lastz GCAregion.fa UCSCregion.fa --step=20 --nogapped --format=rdotplot > humanvsmousesameregion.txt #forvizwithR. The output is bad, there isn't the same region syntenic share between two species
 ```
