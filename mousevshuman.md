@@ -59,40 +59,41 @@ bedtools getfasta -fi human/GCA_000001405.27_GRCh38.p12_genomic_changeid.fa -bed
 
 ```shell
 lastz GCA_idfrompaf.fa UCSC_idfrompaf.fa --notransition --step=20 --nogapped --format=maf > aln.maf
-last-dotplot aln.maf algn.png
+last-dotplot aln.maf algnChrxandChr1.png
 ```
+
+![algnChrxandChr1.png](/img/algnChrxandChr1.png)
 or with R
 
 ```shell
-lastz GCA_idfrompaf.fa UCSC_idfrompaf.fa --notransition --step=20 --nogapped --format=rdotplot > humanvsmouse.txt
+lastz GCA_idfrompaf.fa UCSC_idfrompaf.fa --notransition --step=20 --nogapped --format=rdotplot >  algnChrxandChr1.txt
 ```
 ```R
-dots = read.table("aln.txt",header=T)
+dots = read.table("algnChrxandChr1.txt",header=T,row.names=NULL)
 plot(dots,type="l")
 ```
+![sample.png](/img/sample.png)
+
 or in R with my script: 
-```R
-library(ggplot2)
-library(tidyverse)
-myd <- read.table("humanvsmouse.txt", header=TRUE, sep="\t", row.names=NULL)
-x <- myd[,1, drop=FALSE]
-x$homo  <- "homo"
-y <- myd[,2, drop=FALSE]
-y$mouse  <- "mouse"
-df = data.frame (x, y)
-colnames(df) = c("value_homo", "id_homo", "value_mouse", "id_mouse")
-myd = df %>% gather(species,values,starts_with("value_"))
-p = ggplot(myd, aes(values, values)) + geom_point(aes(colour = as.factor(species)))
-q = ggplot(myd, aes(species, values)) + geom_point(aes(colour = as.factor(species)))
-```
+[/script/dotplot.R](/script/dotplot.R)
 
-
-
-I tried with another IDS: 
-
-
+![alnchrx_chr1.png](/img/alnchrx_chr1.png)
 
 I tried with more IDS:
+See bed files:
+
+[test](/test/extractseq_humanfrompaf.bed)
+[test](/test/extractseq_mousefrompaf.bed )
+
+lastz GCA_idfrompaf.fa[multiple] UCSC_idfrompaf.fa[multiple] --notransition --step=20 --nogapped --format=rdotplot --ambiguous=iupac >  algnmorechrandmorechr.txt
+
+Using my R script:
+![aln4seqvs4seq.png](/aln4seqvs4seq.png)
+
+
+
+
+
 
 
 
