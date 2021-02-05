@@ -1,6 +1,13 @@
 library(ggplot2)
 library(tidyverse)
-myd <- read.table("algnChrxandChr1.txt", header=TRUE, sep="\t", row.names=NULL)
+library(argparse)
+
+args = commandArgs(trailingOnly=TRUE)
+input=as.numeric(args[1])
+
+
+myd <- read.table(args[1], header=T, sep="\t", row.names=NULL)
+
 x <- myd[,1, drop=FALSE]
 x$homo  <- "homo"
 y <- myd[,2, drop=FALSE]
