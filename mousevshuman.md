@@ -57,13 +57,29 @@ last-dotplot aln.maf algn.png
 or with R
 
 ```shell
-lastz GCA_idfrompaf.fa UCSC_idfrompaf.fa --notransition --step=20 --nogapped --format=rdotplot > aln.txt
+lastz GCA_idfrompaf.fa UCSC_idfrompaf.fa --notransition --step=20 --nogapped --format=rdotplot > humanvsmouse.txt
 ```
 ```R
 dots = read.table("aln.txt",header=T)
 plot(dots,type="l")
 ```
 I have done this for differents IDS..
+
+For the better visualization:
+```R
+library(ggplot2)
+library(tidyverse)
+myd <- read.table("humanvsmouse.txt", header=TRUE, sep="\t", row.names=NULL)
+x <- myd[,1, drop=FALSE]
+x$homo  <- "homo"
+y <- myd[,2, drop=FALSE]
+y$mouse  <- "mouse"
+df = data.frame (x, y)
+colnames(df) = c("value_homo", "id_homo", "value_mouse", "id_mouse")
+myd = df %>% gather(species,values,starts_with("value_"))
+p = ggplot(myd, aes(values, values)) + geom_point(aes(colour = as.factor(species)))
+q = ggplot(myd, aes(species, values)) + geom_point(aes(colour = as.factor(species)))
+```
 
 2. If you want to align everything against everything:
 ```shell
