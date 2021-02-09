@@ -88,9 +88,26 @@ env TMPDIR=~/data/tmp vt index 39strains_s8000_smooth_pangenome.vcf.gz
 env TMPDIR=~/data/tmp vt normalize -n 39strains_s8000_smooth_pangenome.vcf.gz -r /home/flaviav/data/UCSC_mm10_chr19_only.fa | vt uniq - -o 39strains_s8000_smooth_pangenome.norm.uniq.vcf
 
 env TMPDIR=~/data/tmp vt decompose 39strains_s8000_smooth_pangenome.norm.uniq.vcf -o 39strains_s8000_smooth_pangenome.norm.uniq.decomp.vcf
+
+vt peek 39strains_s8000_smooth_pangenome_norm_uniq_decomp.vcf
+```
+- Statistics on 39strains_s8000_smooth_pangenome_norm_uniq_decomp.vcf
+
+```shell
+bcftools stats -i 'QUAL>20' 39strains_s8000_smooth_pangenome.norm.uniq.decomp.vcf > 39strains_s8000_smooth_pangenome.norm.uniq.decomp.bcfQUALstats
+plot-vcfstats -p outdir 39strains_s8000_smooth_pangenome.norm.uniq.decomp.bcf-stats
+
+vcftools --vcf 39strains_s8000_smooth_pangenome.norm.uniq.decomp.vcf --het --out output.het #it doesn't work because there isn't the GT format
 ```
 
-Plot
+
+
+
+
+
+
+
+Plot for distribution of N..
 
 ```R
 myd = read.table("/home/flavia/Desktop/table.txt", header=T)
