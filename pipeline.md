@@ -56,7 +56,7 @@ centro.fa
 
 ### VARIANT CALLING ON THE PANGENOME OBTAINED BY PGGB
 
-## The best command for build pangenome from 39 strains:
+## 1. The best commands for build the pangenome from 39 strains:
 
 ```shell
 ./pggb -i /home/flaviav/data/BXD/39strains_chr19+ref_chr19.fa -a 0 -s 5000 -l 15000 -p 99 -w 30000 -j 5000  -e 5000 -n 6 -t 20 -Y "#" -k 29 -K 16 -I 0.5 -R 0.2 -o pang5000
@@ -67,21 +67,29 @@ centro.fa
 I'm based on the output obtained by the last command:
 
 - Stastics on GFA obtained by seqwish: 
-#length   nodes   edges   paths
-257572767 1406518 2521219 19773
 
+
+GFA           | Length        | Nodes      | Edges   |  Paths
+--------------| -------------  | -------------- |--------- | -----------
+ seqwish             | 257572767              | 1406518               |  2521219       | 19773
+
+ 
 - Statistics on GFA obtained by smoothxg:
-#length    nodes   edges     paths
-223294493  9891933 14023885  99633
+
+GFA           | Length        | Nodes      | Edges   |  Paths
+--------------| -------------  | -------------- |--------- | -----------
+smoothxg      | 223294493              | 9891933               |  14023885       | 99633
 
 
-- Variant calling
+
+## 2. Variant calling with gfautil
 
 ```shell
 env TMPDIR=~/data/tmp gfautil --debug -t 20 -i /home/flaviav/data/pang_39strains/pang8000/39strains_chr19+ref_chr19.fa.pggb-E-s8000-l24000-p98-n6-a0-K16-k29-w300000-j8000-e8000-I0.6-R0.2.smooth.gfa gfa2vcf --refs "REF#chr19" > /home/flaviav/data/pang_39strains/call_variants/39strains_s8000_smooth_pangenome.vcf
 ```
 
-- Normalized the output of gfautil
+## 3. Normalize and decompose the output of gfautil:
+
 ```shell
 env TMPDIR=~/data/tmp vt index 39strains_s8000_smooth_pangenome.vcf.gz
 
@@ -91,10 +99,11 @@ env TMPDIR=~/data/tmp vt decompose 39strains_s8000_smooth_pangenome.norm.uniq.vc
 
 vt peek 39strains_s8000_smooth_pangenome_norm_uniq_decomp.vcf
 ```
-- Statistics on 39strains_s8000_smooth_pangenome_norm_uniq_decomp.vcf
+## 4. Statistics on 39strains_s8000_smooth_pangenome_norm_uniq_decomp.vcf
 
 ```shell
-bcftools stats -i 'QUAL>20' 39strains_s8000_smooth_pangenome.norm.uniq.decomp.vcf > 39strains_s8000_smooth_pangenome.norm.uniq.decomp.bcfQUALstats
+bcftools stats 39strains_s8000_smooth_pangenome.norm.uniq.decomp.vcf > 39strains_s8000_smooth_pangenome.norm.uniq.decomp.bcf-stats
+
 plot-vcfstats -p outdir 39strains_s8000_smooth_pangenome.norm.uniq.decomp.bcf-stats
 
 vcftools --vcf 39strains_s8000_smooth_pangenome.norm.uniq.decomp.vcf --het --out output.het #it doesn't work because there isn't the GT format
