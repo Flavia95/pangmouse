@@ -60,7 +60,7 @@ bedtools getfasta -fi human/GCA_000001405.27_GRCh38.p12_genomic_changeid.fa -bed
 ```shell
 lastz GCA_idfrompaf.fa UCSC_idfrompaf.fa --notransition --step=20 --nogapped --format=maf > aln.maf
 ```
-4. **I viewed the output using three different methods, the first two seems don't work very well**
+4. **I viewed the output using different methods, but the visualization with the maf output doesn't work**
 
 - With last-dotplot:
 
@@ -69,72 +69,28 @@ last-dotplot aln.maf algnChrxandChr1.png
 ```
 ![algnChrxandChr1.png](/img/algnChrxandChr1.png)
 
-- With the output obtained by lastz, using R:
 
+## Use approximate mapping + lastz (with paf output)
+
+With one ID for species, seems works:
+
+The same for more IDs:
 ```shell
-lastz GCA_idfrompaf.fa UCSC_idfrompaf.fa --notransition --step=20 --nogapped --format=rdotplot >  algnChrxandChr1.txt
+wfmash -m -s 100000 -p 75 UCSC_mm10_chr11_only.fa GCA_chr17_only.fa > UCSCvsGCA_chr11_chr17.paf && awk -F "\t" 'OFS="\t" {print $1, $3, $4, $5 > ("extractseq_homo.bed")}' UCSCvsGCA_chr11_chr17.paf && awk -F "\t" 'OFS="\t" {print $6, $8, $9, $5 > ("extractseq_mouse.bed")}' UCSCvsGCA_chr11_chr17.paf && bedtools getfasta -fi GCA_chr17_only.fa -bed extractseq_homo.bed > GCA_idfrompafchr17_moreseq.fa && bedtools getfasta -fi UCSC_mm10_chr11_only.fa -bed extractseq_mouse.bed > UCSC_idfrompafchr11_moreseq.fa && ./lastz UCSC_idfrompafchr11_moreseq.fa[multiple] GCA_idfrompafchr17_moreseq.fa[multiple] --format=paf:wfmash --gfextend --nochain --gapped > GCA_UCSC_lastz.paf && sort -n -k 8 GCA_UCSC_lastz.paf > GCA_UCSC_lastz_sort.paf && ./paf2dotplot png large GCA_UCSC_lastz_sort.paf
 ```
-```R
-dots = read.table("algnChrxandChr1.txt",header=T,row.names=NULL)
-plot(dots,type="l")
-```
-![sample.png](/img/sample.png)
+The results are good but I used another command of lastz:
 
-- With my script using the output obtained by Lastz (algnChrxandChr1.txt) using R:
- 
-[dotplot.R](script/dotplot.R) Rscript dotplot.R input 
 
-![alnchrx_chr1.png](/img/alnchrx_chr1.png)
+1. Convert the two genomes to 2bit (full FASTA files you used as input to wfmash)
 
-## I tried with more IDS:
+2. For each line in the wfmash PAF
 
-- Using the IDs extracted by the PAF file:
+3. Run lastz using the 2bit references and the new command line:
+file.2bit/chr3[100..200]
 
-[extractseq_humanfrompaf.bed](test/extractseq_humanfrompaf.bed)
+cat UCSCvsGCA_chr11_chr17.paf | while read line ; do ./lastz  --nogfextend --nochain --nogapped --format=paf:wfmash UCSC_prova.2bit/Mouse#chr11[69274866..97580505] GCA_prova.2bit/Homosapiens#chr17[7700000..38600000]; done> UCSCvsGCA_lastz_after2bit.paf
 
-[extractseqmousefrompaf.bed](test/extractseq_mousefrompaf.bed)
 
-```shell
-bedtools getfasta -fi mouse/UCSC_mm10_changeid.fa -bed extractseq_mousefrompaf.bed > UCSC_idfrompaf.fa
-bedtools getfasta -fi human/GCA_000001405.27_GRCh38.p12_genomic_changeid.fa -bed extractseq_humanfrompaf.bed > GCA_idfrompaf.fa
-```
 
-- Aligment using Lastz:
 
-```shell
-lastz GCA_idfrompaf.fa[multiple] UCSC_idfrompaf.fa[multiple] --notransition --step=20 --nogapped --format=rdotplot --ambiguous=iupac >  algnmorechrandmorechr.txt
-```
 
-- Using my [R script](dotplot.R) for visualized algnmorechrandmorechr.txt
-
-Rscript dotplot.R input 
-
-![plotaln4seqvs4seq](/img/aln4seqvs4seq.png)
-
-## Other considerations
-
-1. If we want to align everything against everything:
-
-```shell
-cat GCA_idfrompaf.fa UCSC_idfrompaf.fa > GCA+UCSC.fa
-lastz GCA+UCSC.fa[multiple] GCA+UCSC.fa[multiple] --step=20 --nogapped  --format=maf > GCA+UCSC.maf #this output is big
-```
-2. If we want to extract a single region for both references:
-
-I used it http://emboss.sourceforge.net/apps/cvs/emboss/apps/extractseq.html
-
-The same commands for two reference genomes:
-
-```shell
-extractseq
-Input sequence:human/GCA_000001405.27_GRCh38.p12_genomic_changeid.fa
-Regions to extract (eg: 4-57,78-94) [1-248956422]: 30000000-60000000
-output sequence(s) [chr1.fasta]:  GCAregion.fa 
-```
-
-```shell
-lastz GCAregion.fa UCSCregion.fa --step=20 --nogapped --format=maf > alnsameregion.maf 
-last-dotplot alnsameregion.maf sameregionshumanvsmouse.png
-lastz GCAregion.fa UCSCregion.fa --step=20 --nogapped --format=rdotplot > humanvsmousesameregion.txt #forvizwithR. 
-```
-I don't think this makes sense because there is no single (syntenic) region that is the same for both species, even taking into consideration a single chromosome.
