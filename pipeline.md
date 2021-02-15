@@ -1,4 +1,4 @@
-## Build pangenome for more strains of mouse
+## Pangenome on inbreed populations of mice
 
 I started from assembly obtained by Supernova tool
 
@@ -31,32 +31,11 @@ echo 19 | while read i; do awk '$6 == "REF#chr'$i'"' C57BL6J+DBA2J+BXD001+BXD002
 ```shell 
 cat id_C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012vsref.chr19.txt | while read line ; do samtools faidx C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_supernova_changeid.fa $line; done > C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa
 ```
-- pggb pipeline
 
-```shell
-./pggb -i /home/flaviav/C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa.gz -s 5000 -p 99 -n 10 -Y '#' -w 30000 -s 50000 -I 0.5 -t 16 -o out
-```
+Add image pggb pipeline
 
-## In the left of the pangenome there is an unconstructed portion, that seems correspond to the centromeric region, I checked this
 
-1. I extracted all sequences IDS in the fasta files of ten strains (onlychr19):
-```shell
-zgrep "^>" C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa.gz | cut -d'|' -f3 | cut -d ' ' -f1 > file.txt
-```
-2. For each sequence ID I added the position that correspondes to the centromer (0-3MB) and I obtained a bed file
-
-3. I extracted for each sequence IDs the sequences that correspondes to the centromer:
-```shell
-samtools faidx C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa
-
-bedtools getfasta -fi C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012_chr19.fa -bed centromericregion.bed > 10strainsonlypos
-centro.fa
-```
-4. I built with pggb the pangenome --> it is a zoom of the left of the previous pangenome and it correpondes to the centromeric region..
-
-### VARIANT CALLING ON THE PANGENOME OBTAINED BY PGGB
-
-## 1. The best commands for build the pangenome from 39 strains:
+## 1. I tried more commands for obtained the best pangenome, the best commands for build the pangenome from 39 strains are these:
 
 ```shell
 ./pggb -i /home/flaviav/data/BXD/39strains_chr19+ref_chr19.fa -a 0 -s 5000 -l 15000 -p 99 -w 30000 -j 5000  -e 5000 -n 6 -t 20 -Y "#" -k 29 -K 16 -I 0.5 -R 0.2 -o pang5000
@@ -85,7 +64,7 @@ smoothxg      | 223294493              | 9891933               |  14023885      
 ## 2. Variant calling with gfautil
 
 ```shell
-env TMPDIR=~/data/tmp gfautil --debug -t 20 -i /home/flaviav/data/pang_39strains/pang8000/39strains_chr19+ref_chr19.fa.pggb-E-s8000-l24000-p98-n6-a0-K16-k29-w300000-j8000-e8000-I0.6-R0.2.smooth.gfa gfa2vcf --refs "REF#chr19" > /home/flaviav/data/pang_39strains/call_variants/39strains_s8000_smooth_pangenome.vcf
+env TMPDIR=~/data/tmp gfautil --debug -t 20 -i 39strains_chr19+ref_chr19.fa.pggb-E-s8000-l24000-p98-n6-a0-K16-k29-w300000-j8000-e8000-I0.6-R0.2.smooth.gfa gfa2vcf --refs "REF#chr19" > 39strains_s8000_smooth_pangenome.vcf
 ```
 
 ## 3. Normalize and decompose the output of gfautil:
@@ -107,21 +86,4 @@ bcftools stats 39strains_s8000_smooth_pangenome.norm.uniq.decomp.vcf > 39strains
 plot-vcfstats -p outdir 39strains_s8000_smooth_pangenome.norm.uniq.decomp.bcf-stats
 
 vcftools --vcf 39strains_s8000_smooth_pangenome.norm.uniq.decomp.vcf --het --out output.het #it doesn't work because there isn't the GT format
-```
-
-
-
-
-
-
-
-
-Plot for distribution of N..
-
-```R
-myd = read.table("/home/flavia/Desktop/table.txt", header=T)
-p = myd %>% gather(count, value, values:N) %>% ggplot(aes(value, samples, fill = count)) + geom_bar(stat = "identity", width=0.50) + facet_wrap(.~ species)
-p + labs(x="Values") + theme(legend.title = element_blank()) + theme_bw()+ + ylab("Chromosomes") + scale_fill_discrete(name = “Count”, labels = c(“N”, "nucleotides"))
-
-ggsave("/home/flavia/Desktop/Distribution", plot= p, device="png", width = 20, height = 15, units = "cm", dpi = 300)
 ```
