@@ -69,8 +69,8 @@ wfmash -m -K -k 29 -p 75 -s 10000000 -l 0 -t 16 GCA_000001405.15_GRCh38_no_alt_p
 ![approximatemapping](/img/approximate_mappingp75.png)
 
 ```shell
-sort -n -k 11 human-mouse.-m-k29-p75-K-s10000000-l0.paf | awk '{ sum += $11 } END { print sum }'
-1700012320
+sort -n -k 11 human-mouse.-m-k29-p75-K-s10000000-l0.paf | awk '{ sum += $11 } END { print sum }'  
+1700012320  #number of mapped segments
 ```
 
 ## Possible use of approximate mapping + lastz
@@ -127,7 +127,7 @@ faToTwoBit genome.fa genome.2bit
 ```
 2. For each line in the wfmash PAF, run lastz using the 2bit references and the new command line:
 ```shell
-/lastz --nogfextend --nochain --nogapped --format=paf:wfmash UCSC_prova.2bit/Mouse#chr11[69274866..69374866] GCA_prova.2bit/Homosapiens#chr17[7700000..7800000]; done> UCSCvsGCA_lastz_after2bit.paf && sort -n -k 8 GCA_UCSC_lastz_after2bit.paf > GCA_UCSC_lastz_sort_after2bit.paf && ./paf2dotplot png large GCA_UCSC_lastz_sort_after2bit.paf
+/lastz --nogfextend --nochain --nogapped --format=paf:wfmash UCSC.2bit/Mouse#chr11[69274866..69374866] GCA.2bit/Homosapiens#chr17[7700000..7800000]; done> UCSCvsGCA_lastz_after2bit.paf && sort -n -k 8 GCA_UCSC_lastz_after2bit.paf > GCA_UCSC_lastz_sort_after2bit.paf && ./paf2dotplot png large GCA_UCSC_lastz_sort_after2bit.paf
 ```
 3. Plot the query and ref positions of each PAF record using R for all records..
 ![refvsquery.png](/img/ref_query.png)
