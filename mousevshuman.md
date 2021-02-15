@@ -73,7 +73,7 @@ sort -n -k 11 human-mouse.-m-k29-p75-K-s10000000-l0.paf | awk '{ sum += $11 } EN
 1700012320  #number of mapped segments
 ```
 
-## Possible use of approximate mapping + lastz
+## Possible use of approximate mapping (to check syntenic regions) with wfmash + lastz (best for crossmapping species)
 
 1. **Taked a single line from the PAF obtained by the approximate mapping (wfmash)**
 
@@ -95,7 +95,7 @@ bedtools getfasta -fi human/GCA_000001405.27_GRCh38.p12_genomic_changeid.fa -bed
 ```shell
 lastz GCA_idfrompaf.fa UCSC_idfrompaf.fa --notransition --step=20 --nogapped --format=maf > aln.maf
 ```
-4. **I viewed the output using different methods, but the visualization with the maf output doesn't work**
+4. **I viewed the output using different methods, but the visualization with the MAF output doesn't work**
 
 - With last-dotplot:
 
@@ -105,7 +105,7 @@ last-dotplot aln.maf algnChrxandChr1.png
 ![algnChrxandChr1.png](/img/algnChrxandChr1.png)
 
 
-## Use approximate mapping + lastz, fortunately, lastz now has a PAF as an output
+## Use approximate mapping + lastz, fortunately, but now lastz has a PAF as an output
 
 I used chr17 of human and chr11 of mouse, because there were synthenic regions.
 
@@ -118,10 +118,10 @@ The same for more IDs:
 ```shell
 wfmash -m -s 100000 -p 75 UCSC_mm10_chr11_only.fa GCA_chr17_only.fa > UCSCvsGCA_chr11_chr17.paf && awk -F "\t" 'OFS="\t" {print $1, $3, $4, $5 > ("extractseq_homo.bed")}' UCSCvsGCA_chr11_chr17.paf && awk -F "\t" 'OFS="\t" {print $6, $8, $9, $5 > ("extractseq_mouse.bed")}' UCSCvsGCA_chr11_chr17.paf && bedtools getfasta -fi GCA_chr17_only.fa -bed extractseq_homo.bed > GCA_idfrompafchr17_moreseq.fa && bedtools getfasta -fi UCSC_mm10_chr11_only.fa -bed extractseq_mouse.bed > UCSC_idfrompafchr11_moreseq.fa && ./lastz UCSC_idfrompafchr11_moreseq.fa[multiple] GCA_idfrompafchr17_moreseq.fa[multiple] --format=paf:wfmash --gfextend --nochain --gapped > GCA_UCSC_lastz.paf && sort -n -k 8 GCA_UCSC_lastz.paf > GCA_UCSC_lastz_sort.paf && ./paf2dotplot png large GCA_UCSC_lastz_sort.paf
 ```
-The results are good but I used another command of lastz, for:
+The results are good but I used another command of lastz, to skip the step of extracting IDs using bedtools, this could distort the result, the steps are these:
 
 
-1. Convert the two genomes to 2bit (full FASTA files you used as input to wfmash):
+1. Convert the two genomes to 2bit (full FASTA files that I used as input to wfmash):
 ```shell
 faToTwoBit genome.fa genome.2bit
 ```
