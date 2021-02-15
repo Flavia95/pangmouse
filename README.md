@@ -1,3 +1,4 @@
 # pangmouse
 
-Construct the pangenome from mouse sequences
+- Pangenome on inbreed populations of mice
+- Pangenome build of reference genomes
