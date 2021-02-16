@@ -154,9 +154,86 @@ INDEL/CLUMPED |  24717
 [Variants on seqwish pangenome](https://github.com/Flavia95/Rplots/blob/main/plots/distributiononpangenomeof39strainsafterseqwish.png)
  
  - I check the distribution of INDELS, it seems things are everywhere.
+
 [Distribution of deletions](https://github.com/Flavia95/Rplots/blob/main/plots/distributiofdel.png)
  
 [Distribution of insertions](https://github.com/Flavia95/Rplots/blob/main/plots/Distributionofins.png)
+
+## Gfautil on HLA region (L-3139) against vg
+
+```shell
+odgi build -g L-3139.sort.gfa -o L-3139.sort.og
+odgi stats -S -i L-3139.sort.og
+```
+#length nodes   edges   paths
+7473    242     324     8
+
+
+
+- VG
+```shell
+vg view -Fv L-3139.sort.gfa > L-3139.vg
+vg index  L-3139.vg -x  L-3139.xg
+vg deconstruct -p "gi|528476637:30229380-30236765" L-3139.xg > L-3139.vg.vcf
+
+vt index L-3139.vg.vcf
+vt normalize -n L-3139.vg.vcf.gz -r refL-3139.fa | vt uniq - -o L-3139.vg.norm.uniq.vcf
+vt decompose L-3139.vg.norm.uniq.vcf -o L-3139.vg.norm.uniq.decomp.vcf
+vt peek L-3139.vg.norm.uniq.decomp.vcf 
+```
+
+Variants          | Number       
+--------------| -------------  
+totatal Variants |  82
+biallelic variants | 81
+multiallelic variants | 1
+SNP        | 70   
+MNP    | 	3
+INDEL  | 9
+SNP/MNP | 1
+
+- GFAUTIL
+
+```shell
+
+gfautil --debug -t 20 -i L-3139.sort.gfa gfa2vcf --refs "gi|528476637:30229380-30236765" > L-3139.gfautil.vcf
+vt index L-3139.gfautil.vcf.gz
+vt normalize L-3139.gfautil.vcf.gz -n -r refL-3139.fa | vt uniq - -o L-3139.gfautil.norm.uniq.vcf
+vt decompose L-3139.gfautil.norm.uniq.vcf -o L-3139.gfautil.norm.uniq.decomp.vcf
+vt peek L-3139.gfautil.norm.uniq.decomp.vcf
+
+```
+
+Variants          | Number       
+--------------| -------------  
+totatal Variants |  83
+biallelic variants | 83
+multiallelic variants | 0 
+SNP        | 72   
+MNP    | 	2
+INDEL  | 9
+SNP/MNP | -
+
+      
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+ON YEAST:
+./vg view -Fv /home/flaviav/git/pggb/pggb_yeast/cerevisiae.pan.fa.gz.pggb-W-s50000-l150000-p90-n5-a0-K16-k8.seqwish-w30000-j5000-e5000-I0.7.
+smooth.gfa > cerevisiae.pan.smooth.vg
+vg index  cerevisiae.pan.smooth.vg -x  cerevisiae.pan.smooth.xg
+vg deconstruct -p "S288C.chrI" cerevisiae.pan.smooth.xg > cerevisiae.pan.smooth.vcf
+
+SEGMENTATION FAULT
+
+
+gfautil --debug -t 20 -i /home/flaviav/git/pggb/pggb_yeast/cerevisiae.pan.fa.gz.pggb-W-s50000-l150000-p90-n5-a0-K16-k8.seqwish-w30000-j5000-e5000-I0.7.
+smooth.gfa gfa2vcf --refs "S288C.chrI" > cerevisiae.gfautil.smooth.vcf
+
+
+
+
 
 
 
