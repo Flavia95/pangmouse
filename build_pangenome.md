@@ -214,7 +214,18 @@ MNP    | 	2
 INDEL  | 9
 SNP/MNP | -
 
-      
+ 
+## Summing up:
+
+- Variants obtained by gfautil are not accepted by vt tools, it is know that works on VCF file.
+
+- The number of variants is not the same for gfautil and vg--> we could simulate a GFA, to understand if we get what we have simulated.
+
+- The GT and Sample columns are missing, useful for variant analysis, 
+ 
+ 
+
+
 
 
 
