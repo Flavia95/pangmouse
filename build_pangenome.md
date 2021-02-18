@@ -215,37 +215,41 @@ INDEL  | 9
 SNP/MNP | -
 
  
-## On the last command of pggb, I redo smoothxg
+## On the last command of pggb for 39 strains:
 
+```shell
+./pggb -i 39strains_chr19+ref_chr19.fa -a 0 -s 8000 -p 98 -w 300000 -j 8000 -e 8000 -n 6 -t 20 -Y "#" -S -k 29 -I 0.6 -R 0.2 -o pang8000
+```
 
+**I redo smoothxg:**
+
+```shell
 smoothxg -t 20 -g pang8000_newversionsmoothxg/39strains_chr19+ref_chr19.fa.pggb-E-s8000-l24000-p98-n6-a0-K16-k29.seqwish.gfa -w 300000 -M -J 0.7 -K -I 0.6 -R 0.2 -j 8000 -e 8000 -l 10000 --poa-params 1,9,16,2,41,1 -m pang8000_newversionsmoothxg/39strains_chr19+ref_chr19.fa.pggb-E-s8000-l24000-p98-n6-a0-K16-k29.seqwish-w300000-j8000-e8000-I0.6.smooth.maf -C pang8000_newversionsmoothxg/39strains_chr19+ref_chr19.fa.pggb-E-s8000-l24000-p98-n6-a0-K16-k29.seqwish-w300000-j8000-e8000-I0.6.smooth.consensus,10,100,1000,10000 -o pang8000_newversionsmoothxg/39strains_chr19+ref_chr19.fa.pggb-E-s8000-l24000-p98-n6-a0-K16-k29.seqwish-w300000-j8000-e8000-I0.6.smooth.poa.gfa
+```
+On this output again I redo:
 
-On this output again:
-
-gfautil --debug -t 20 -i 39strains_chr19+ref_chr19.fa.pggb-E-s8000-l24000-p98-n6-a0-K16
--k29.seqwish-w300000-j8000-e8000-I0.6.smooth.poa.gfa gfa2vcf --refs "REF#chr19" > 39strains_s8000_smooth.poa.vcf
-
+```shell
+gfautil --debug -t 20 -i 39strains_chr19+ref_chr19.fa.pggb-E-s8000-l24000-p98-n6-a0-K16-k29.seqwish-w300000-j8000-e8000-I0.6.smooth.poa.gfa gfa2vcf --refs "REF#chr19" > 39strains_s8000_smooth.poa.vcf
+```
 The situation has improved:
 
 BEFORE:
 
-#length         nodes   edges       paths
-223294493       9891933 14023885    99633
+GFA           | Length        | Nodes      | Edges   |  Paths
+--------------| -------------  | -------------- |--------- | -----------
+smoothxg      | 223294493              | 9891933               |  14023885       | 99633
 
-SNP--> 42838  
-INDEL--> 58504
-
-
-After POA
-
-#length          nodes   edges   paths                                                                                     
-222685003       6195970 9332308 80179
-
-SNP--> 16390
-INDEL--> 15395
+**SNPs--> 42838  
+INDELs--> 58504**
 
 
+AFTER:
 
+GFA           | Length        | Nodes      | Edges   |  Paths
+--------------| -------------  | -------------- |--------- | -----------
+after add --POA      | 222685003             |  6195970               |  9332308       | 80179
 
+**SNPs--> 16390
+INDELs--> 15395**
 
 
