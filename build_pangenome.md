@@ -215,35 +215,34 @@ INDEL  | 9
 SNP/MNP | -
 
  
-## Summing up:
-
-- Variants obtained by gfautil are not accepted by vt tools, it is know that works on VCF file.
-
-- The number of variants is not the same for gfautil and vg--> we could simulate a GFA, to understand if we get what we have simulated.
-
-- The GT and Sample columns are missing, useful for variant analysis, 
- 
- 
+## On the last command of pggb, I redo smoothxg
 
 
+smoothxg -t 20 -g pang8000_newversionsmoothxg/39strains_chr19+ref_chr19.fa.pggb-E-s8000-l24000-p98-n6-a0-K16-k29.seqwish.gfa -w 300000 -M -J 0.7 -K -I 0.6 -R 0.2 -j 8000 -e 8000 -l 10000 --poa-params 1,9,16,2,41,1 -m pang8000_newversionsmoothxg/39strains_chr19+ref_chr19.fa.pggb-E-s8000-l24000-p98-n6-a0-K16-k29.seqwish-w300000-j8000-e8000-I0.6.smooth.maf -C pang8000_newversionsmoothxg/39strains_chr19+ref_chr19.fa.pggb-E-s8000-l24000-p98-n6-a0-K16-k29.seqwish-w300000-j8000-e8000-I0.6.smooth.consensus,10,100,1000,10000 -o pang8000_newversionsmoothxg/39strains_chr19+ref_chr19.fa.pggb-E-s8000-l24000-p98-n6-a0-K16-k29.seqwish-w300000-j8000-e8000-I0.6.smooth.poa.gfa
+
+On this output again:
+
+gfautil --debug -t 20 -i 39strains_chr19+ref_chr19.fa.pggb-E-s8000-l24000-p98-n6-a0-K16
+-k29.seqwish-w300000-j8000-e8000-I0.6.smooth.poa.gfa gfa2vcf --refs "REF#chr19" > 39strains_s8000_smooth.poa.vcf
+
+The situation has improved:
+
+BEFORE:
+
+#length         nodes   edges       paths
+223294493       9891933 14023885    99633
+
+SNP--> 42838  
+INDEL--> 58504
 
 
+After POA
 
+#length          nodes   edges   paths                                                                                     
+222685003       6195970 9332308 80179
 
-
-----------------------------------------------------------------------------------------------------------------------------------------------
-ON YEAST:
-./vg view -Fv /home/flaviav/git/pggb/pggb_yeast/cerevisiae.pan.fa.gz.pggb-W-s50000-l150000-p90-n5-a0-K16-k8.seqwish-w30000-j5000-e5000-I0.7.
-smooth.gfa > cerevisiae.pan.smooth.vg
-vg index  cerevisiae.pan.smooth.vg -x  cerevisiae.pan.smooth.xg
-vg deconstruct -p "S288C.chrI" cerevisiae.pan.smooth.xg > cerevisiae.pan.smooth.vcf
-
-SEGMENTATION FAULT
-
-
-gfautil --debug -t 20 -i /home/flaviav/git/pggb/pggb_yeast/cerevisiae.pan.fa.gz.pggb-W-s50000-l150000-p90-n5-a0-K16-k8.seqwish-w30000-j5000-e5000-I0.7.
-smooth.gfa gfa2vcf --refs "S288C.chrI" > cerevisiae.gfautil.smooth.vcf
-
+SNP--> 16390
+INDEL--> 15395
 
 
 
