@@ -45,7 +45,7 @@ cat id_C57BL6J+DBA2J+BXD001+BXD002+BXD005+BXD006+BXD008+BXD009+BXD011+BXD012vsre
 ![Build pangenome](img/pggb.png)
 
 
-## 1. I tried more commands for obtained the best mapping and best pangenome from 39 strains.
+## 1. I tried several command lines to obtained the best mapping and best pangenome from 39 strains.
 These are the best:
 
 ```shell
@@ -249,7 +249,6 @@ GFA           | Length        | Nodes      | Edges   |  Paths
 --------------| -------------  | -------------- |--------- | -----------
 after add --POA      | 222685003             |  6195970               |  9332308       | 80179
 
-**SNPs--> 16390
-INDELs--> 15395**
+**SNPs--> 16390**
 
-
+**INDELs--> 15395**
