@@ -39,6 +39,6 @@ cat  DBA2_J_changeid.fa DBA_2J_changeid.fa DBA_2J_0334_changeid.fa UCSC_mm10_onl
 ```shell
 awk '!/Consensus/' DBA2_J+DBA_2J+DBA_2J_0334+UCSC_chr19.sites.fa.pggb-W-s500-l1000-p95-n15-a0-K16.seqwish-k27-B25000000.smooth-w500000-j12000-e12000-I0.7-p1_9_16_2_41_1.gfa > DBA2_J+DBA_2J+DBA_2J_033.withoutconses.gfa
 
-gfautil --debug -t 20 -i DBA2_J+DBA_2J+DBA_2J_033.withoutconses.gfa gfa2vcf --refs "REF#chr19"> prova.vcf
+gfautil --debug -t 20 -i DBA2_J+DBA_2J+DBA_2J_033.withoutconses.gfa gfa2vcf --refs "REF#chr19"> DBA2_J+DBA_2J+DBA_2J_033.withoutconses.vcf
 
 ```
