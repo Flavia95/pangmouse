@@ -27,7 +27,7 @@ vcflift.py -fasta  /home/flaviav/testgenomic_pangenomic/little_region/UCSC_mm10.
 
 ```shell
 
--vg construct -r /home/flaviav/testgenomic_pangenomic/UCSC_mm10_onlychr19.fa -v /home/flaviav/testgenomic_pangenomic/DBA2J_consensus_sites_chr19_exractregion_vcflift.vcf -R chr19::3117753-3336924 > DBA2J_chr19_3117753-3336924.vg
+-vg construct -r /home/flaviav/testgenomic_pangenomic/UCSC_mm10_onlychr19.fa -v /home/flaviav/testgenomic_pangenomic/DBA_2J_consensus_site_copy_hom_only_chr19_only.vcf.g -R chr19::3117753-3336924 > DBA2J_chr19_3117753-3336924.vg
 
 -vg view chr19_3117753-3336924.indels.vg> DBA2J_chr19_3117753-3336924.gfa
 
@@ -64,7 +64,7 @@ bcftools isec DBA2J_chr19_3117753-3336924.vgcall.sort.vcf.gz DBA2J_consensus_sit
 
 Models           | VCFfiles |SNPs        
 --------------| ----|---------  
-Genomic models      | DBA2J_consensus_sites_chr19_exractregion_vcflift.sort.vcf.gz|  9
+Genomic model (freebayes)      | DBA2J_consensus_sites_chr19_exractregion_vcflift.sort.vcf.gz|  9
 Pangenomic models (vg) | DBA2J_chr19_3117753-3336924.vgcall.sort.vcf.gz| 7
 Pangenomic models (gfautil) | DBA2J_chr19_3117753-3336924.gfautil.vcf | 7
 
@@ -84,7 +84,7 @@ Gfautil fails to call variants even if I add paths with odgi cover (flaviav@peng
 
 Models           | VCFfiles |INDELs        
 --------------| ----|---------  
-Genomic models      | DBA2J_consensus_indels_chr19_exractregion_vcflift.sort.vcf.gz|  6
+Genomic model  (freebayes)  | DBA2J_consensus_indels_chr19_exractregion_vcflift.sort.vcf.gz|  6
 Pangenomic models (vg) | DBA2J_chr19_3117753-3336924.indels.vgcall.sort.vcf.gz| 6
 
 The number and positions of the variants is the same for vg and the genomic method. 
@@ -104,7 +104,7 @@ The number and positions of the variants is the same for vg and the genomic meth
 
 Models           | VCFfiles |SNPs        
 --------------| ----|---------  
-Genomic models      | DBA2J_consensus_sites_chr19_exractregion_vcflift.sort.vcf.gz |  3816
+Genomic model (freebayes) | DBA2J_consensus_sites_chr19_exractregion_vcflift.sort.vcf.gz |  3816
 Pangenomic models (vg) | DBA2J_chr19_3117753-7117753.vgcall.sort.vcf.gz| 3815
 Pangenomic models (gfautil) | DBA2J_chr19_3117753-7117753.gfautil.vcf.gz | 3815
 
@@ -126,7 +126,7 @@ bcftools isec -p uniqvariants -n-1 -c all DBA2J_consensus_sites_chr19_exractregi
 
 Models           | VCFfiles |INDELs      
 --------------| ----|---------  
-Genomic models      | DBA2J_consensus_indels_chr19_exractregion_vcflift.sort.vcf.gz |  929
+Genomic model (freebayes)     | DBA2J_consensus_indels_chr19_exractregion_vcflift.sort.vcf.gz |  929
 Pangenomic models (vg) | DBA2J_3117753-7117753.indels.vgcall.sort.vcf.gz | 927
 
 flaviav@penguin2:/home/flaviav/testgenomic_pangenomic/big_region/indels/comparetwovcfindels/uniqvariantsindels
