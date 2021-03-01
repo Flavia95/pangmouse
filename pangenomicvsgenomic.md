@@ -27,7 +27,7 @@ vcflift.py -fasta  /home/flaviav/testgenomic_pangenomic/little_region/UCSC_mm10.
 
 ```shell
 
--vg construct -r /home/flaviav/testgenomic_pangenomic/UCSC_mm10_onlychr19.fa -v /home/flaviav/testgenomic_pangenomic/DBA_2J_consensus_site_copy_hom_only_chr19_only.vcf.g -R chr19::3117753-3336924 > DBA2J_chr19_3117753-3336924.vg
+-vg construct -r /home/flaviav/testgenomic_pangenomic/UCSC_mm10_onlychr19.fa -v /home/flaviav/testgenomic_pangenomic/DBA_2J_consensus_site_copy_hom_only_chr19_only.vcf.gz -R chr19::3117753-3336924 > DBA2J_chr19_3117753-3336924.vg
 
 -vg view chr19_3117753-3336924.indels.vg> DBA2J_chr19_3117753-3336924.gfa
 
