@@ -77,7 +77,7 @@ SNP        | 104,550
 MNP    | 	6,022
 INDEL  | 35,154
 
-#### 5) Stats on VCF file
+#### 5) Stats on VCF file (pangenome chr19)
 
 *flaviav@penguin2:/home/flaviav/data/BXD/BXD005+BXD006_1M/variantcalling/stats*
 ```shell
@@ -86,8 +86,21 @@ plot-vcfstats -p outdir BXD005_BXD006.stats  #result-->outdir
 vcflib vcflength BXD005_BXD006.norm.uniq.decomp.vcf | vcfbreakmulti | vcf2tsv | cut -f 16 | cut -f 1- >distribution_indelsvcflib.tsv
 bcftools view -v other /home/flaviav/data/BXD/BXD005+BXD006_1M/variantcalling/BXD005_BXD006.norm.uniq.decomp.vcf > only_other.vcf
 bcftools view -v snps /home/flaviav/data/BXD/BXD005+BXD006_1M/variantcalling/BXD005_BXD006.norm.uniq.decomp.vcf > only_snps.vcf
-bcftools view -v mnps /home/flaviav/data/BXD/BXD005+BXD006_1M/variantcalling/BXD005_BXD006.norm.uniq.decomp.vcf > only_mnp.vcf
+bcftools view -v mnps /home/flaviav/data/BXD/BXD005+BXD006_1M/variantcalling/BXD005_BXD006.norm.uniq.decomp.vcf > only_mnp.vcf #variants_classification.tsv (join all with column with type of variants)
+ ```
 
+Stats Plots:
+
+1. From variants.txt [script.R](https://github.com/Flavia95/Rplots/blob/main/script/piechart.R):
+ [Numbers of variants.png](https://github.com/Flavia95/pangmouse/blob/main/img/distributiononpangenome.png)
+
+2. From distribution_indelsvcflib.tsv [script.R](https://github.com/Flavia95/Rplots/blob/main/script/distributionindels.R):
+[Distribution of indels.png](https://github.com/Flavia95/pangmouse/blob/main/img/Distributionofindels.png)
+
+3. From variants_classification.tsv [script.R](https://github.com/Flavia95/Rplots/blob/main/script/variantsalongchromosome.R):
+[Distribution variants on chr19.png](https://github.com/Flavia95/pangmouse/blob/main/img/Distributionofvariants.png) 
+
+4. From outdir directory [Substitution types.png](https://github.com/Flavia95/pangmouse/blob/main/img/ts_tv.png)
 
 
 
