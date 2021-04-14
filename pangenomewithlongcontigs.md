@@ -79,6 +79,14 @@ INDEL  | 35,154
 
 #### 5) Stats on VCF file
 
+*flaviav@penguin2:/home/flaviav/data/BXD/BXD005+BXD006_1M/variantcalling/stats*
+```shell
+bcftools stats BXD005_BXD006.norm.uniq.decomp.vcf >BXD005_BXD006.stats
+plot-vcfstats -p outdir BXD005_BXD006.stats  #result-->outdir
+vcflib vcflength BXD005_BXD006.norm.uniq.decomp.vcf | vcfbreakmulti | vcf2tsv | cut -f 16 | cut -f 1- >distribution_indelsvcflib.tsv
+bcftools view -v other /home/flaviav/data/BXD/BXD005+BXD006_1M/variantcalling/BXD005_BXD006.norm.uniq.decomp.vcf > only_other.vcf
+bcftools view -v snps /home/flaviav/data/BXD/BXD005+BXD006_1M/variantcalling/BXD005_BXD006.norm.uniq.decomp.vcf > only_snps.vcf
+bcftools view -v mnps /home/flaviav/data/BXD/BXD005+BXD006_1M/variantcalling/BXD005_BXD006.norm.uniq.decomp.vcf > only_mnp.vcf
 
 
 
