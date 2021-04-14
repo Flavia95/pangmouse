@@ -3,7 +3,7 @@ I started with two strains.
 
 *flaviav@penguin2:/home/flaviav/data/BXD/BXD005+BXD006_1M*
 
-A. I extract only the contigs greater than 1 million
+A. I extracted only the contigs greater than 1 million
 ```shell
 awk -v n=1000000 '/^>/{ if(l>n) print b; b=$0;l=0;next }{l+=length;b=b ORS $0}END{if(l>n) print b }'  BXD005_supernova_changeid.fasta > BXD005_len1M.fa
 awk -v n=1000000 '/^>/{ if(l>n) print b; b=$0;l=0;next }{l+=length;b=b ORS $0}END{if(l>n) print b }'  BXD006_supernova_changeid.fasta > BXD006_len1M.fa
