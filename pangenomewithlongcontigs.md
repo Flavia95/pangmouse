@@ -43,7 +43,7 @@ cat chr19_BXD005+BXD006len500kb.pan.fa  /home/flaviav/data/BXD/UCSC_mm10_chr19_o
 *flaviav@penguin2:/home/flaviav/data/BXD/BXD005+BXD006_1M/outpggb*
 
 ```shell
-pggb -i /home/flaviav/data/BXD/BXD005+BXD006_1M/whole/chr19_BXD005+BXD006len1M.pan+ref.fa -W -s 50000 -l 150000 -p 90 -w 500000 -j 1200 -e 12000 -n 10 -t 30 -v
+pggb -i /home/flaviav/data/BXD/BXD005+BXD006_1M/whole/chr19_BXD005+BXD006len1M.pan+ref.fa -s 50000 -l 150000 -p 90 -w 500000 -j 1200 -e 12000 -n 10 -t 30 -v
  -Y "#" -k 191 -B 2100000 -I 0.95 -R 0.3 --poa-params 1,9,16,2,41,1 -o pggb_BXD005+BXD006_1M
 
 ```
