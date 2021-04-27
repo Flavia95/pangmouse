@@ -1,3 +1,4 @@
+#Plots to run after the script statspangvsgeno.sh
 library (VennDiagram)
 library(grid)
 library(scales)
@@ -15,15 +16,12 @@ png('vennpositions.png')
 venn.plot <- draw.pairwise.venn(ListPang+ListInt, ListGeno+ListInt, ListInt, category=c('GATK', 'VG'),fill = c("light blue", "#bbffbb"))
 dev.off()
 
-
 #Piechart_vtpeek
-
 myd = read.delim("types_variants_geno.txt",  sep="\t", header = T)
 df = data.frame(myd)
 c = ggplot(df, aes (x="", y = Count, fill = factor(Type))) + 
 geom_col(position = 'stack', width = 1) +geom_text(aes(label = paste(round(Count / sum(Count) * 100, 1), "%"), x = 1.3), position = position_stack(vjust = 0.6), size = 2.5 , fontface="bold") + theme_classic() + theme(plot.title = element_text(hjust=0.7), axis.line = element_blank(), axis.text = element_blank(), axis.ticks = element_blank()) + labs(fill = "Type", x = NULL, y = NULL, title = "Variants distribution on pangenome of 39 strains after smoothxg") + coord_polar("y")
 ggsave("./distributionofvariants_geno.png", plot= c, device="png", width = 20, height = 15, units = "cm", dpi = 300)
-
 
 myd = read.delim("types_variants_pang.txt",  sep="\t", header = T)
 df = data.frame(myd)
@@ -31,10 +29,7 @@ c = ggplot(df, aes (x="", y = Count, fill = factor(Type))) +
 geom_col(position = 'stack', width = 1) +geom_text(aes(label = paste(round(Count / sum(Count) * 100, 1), "%"), x = 1.3), position = position_stack(vjust = 0.6), size = 2.5 , fontface="bold") + theme_classic() + theme(plot.title = element_text(hjust=0.7), axis.line = element_blank(), axis.text = element_blank(), axis.ticks = element_blank()) + labs(fill = "Type", x = NULL, y = NULL, title = "Variants distribution on pangenome of 39 strains after smoothxg") + coord_polar("y")
 ggsave("./distributionofvariants_pang.png", plot= c, device="png", width = 20, height = 15, units = "cm", dpi = 300)
 
-
-
 #vennvariantsbcftools
-
 myd = read.csv("overlapvariants.tsv", header = T, sep = "\t")
 colnames(myd) <- c("SN", "ID","Type", "Count")                                                     
 variants = c("number of records:")
@@ -49,8 +44,6 @@ png('vennvariants.png')
 venn.plot <- draw.pairwise.venn(Pang+Int, Geno+Int, Int, category=c('VG', 'GATK'),fill = c("light blue", "#bbffbb"))
 dev.off()
 
-
-
 #Concordance and Discordance Classes
 myd = read.csv("overlapvariants.tsv", header = T, sep = "\t")
 colnames(myd) <- c("SN", "ID","Type", "Count")                                                     
@@ -59,12 +52,10 @@ OnlyGeno <- filter (myd, ID == 0 & Type %in% variants)
 mydG<- spread(OnlyGeno, Type, Count)  
 colnames(mydG)<- c("SN", "ID","Indels", "MNPs","Others","SNPs") 
 mydG$ID  <- "Only Genomic"                                                                           
-
 OnlyPang <- filter (myd, ID == 1 & Type %in% variants)
 mydP<- spread(OnlyPang, Type, Count)
 colnames(mydP)<- c("SN", "ID","Indels", "MNPs","Others","SNPs")
 mydP$ID<-" Only Pangenomic"                                                                                                                                                       
-
 Both <- filter (myd, ID == 2 & Type %in% variants)
 mydB<- spread(Both, Type, Count)
 colnames(mydB)<- c("SN", "ID","Indels", "MNPs","Others","SNPs")
@@ -80,7 +71,6 @@ g= myPlot + scale_fill_discrete(labels=c("SNPs", "INDELs", "Others", "MNPs")) + 
 ggsave("./ConcordanceandDiscordanceclasses.png", plot= g, device="png", width = 20, height = 15, units = "cm", dpi = 300)
 
 #Distribution Indels
-
 myd = read.csv("geno.indel.hist", sep="\t", header=T)
 h <- (subset(myd, LENGTH!=0))
 h$Methods  <- "Genomic"
@@ -88,16 +78,14 @@ myd2 = read.csv("pang.indel.hist", sep="\t", header=T)
 h1 <- (subset(myd2, LENGTH!=0))
 h1$Methods  <- "Pangenomic"
 tab <- rbind (h,h1)
-p = ggplot(tab)+
-  geom_col(aes(x = LENGTH, y = COUNT, fill=Methods)) +xlim(-200,200) +ylim(0,10000) + facet_grid(. ~ Methods) +theme_bw() + theme(legend.position = "none")
- ggsave("./Lenindelspangvsgen.png", plot= p, device="png", width = 20, height = 15, units = "cm", dpi = 300) 
+p = ggplot(tab)+ geom_col(aes(x = LENGTH, y = COUNT, fill=Methods)) +xlim(-200,200) +ylim(0,10000) + facet_grid(. ~ Methods) +theme_bw() + theme(legend.position = "none")
+ggsave("./Lenindelspangvsgen.png", plot= p, device="png", width = 20, height = 15, units = "cm", dpi = 300) 
   
 #Zoom indels
 lenindels<-ggplot(tab, aes(LENGTH, COUNT , fill=Methods) ) + geom_col  (position='dodge') + xlim(-1000, 1000) + scale_y_log10() + theme_bw()
 ggsave("./Lenindelszoompangvsgen.png", plot= lenindels, device="png", width = 20, height = 15, units = "cm", dpi = 300)
 
-#Bonus plot
-
+#Bonus plots
 #1. Quality
 myd = read.delim("qual_sites_gen.lqual", sep = "\t", skip = 1)
 colnames(myd) = c("chr", "pos", "qual")
@@ -123,7 +111,7 @@ a <- ggplot(h, aes(maf)) + geom_density(fill = "dodgerblue1", colour = "black", 
 x= a+ facet_grid(. ~ Methods) + theme_light()
 ggsave("./MAFpangvsgen.png", plot= lenindels, device="png", width = 20, height = 15, units = "cm", dpi = 300)
 
-#3. Ibread
+#3. Inbreeding coefficients
 ind_het1 <- read_delim("het_gen.het", delim = "\t",col_names = c("ind","ho", "he", "nsites", "f"), skip = 1)
 a <- ggplot(ind_het1, aes(f)) + geom_histogram(fill = "dodgerblue1", colour = "black", alpha = 0.3) + theme_light()
 ggsave("./inbread.png", plot= lenindels, device="png", width = 20, height = 15, units = "cm", dpi = 300)
