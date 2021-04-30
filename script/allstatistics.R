@@ -84,34 +84,3 @@ ggsave("./Lenindelspangvsgen.png", plot= p, device="png", width = 20, height = 1
 #Zoom indels
 lenindels<-ggplot(tab, aes(LENGTH, COUNT , fill=Methods) ) + geom_col  (position='dodge') + xlim(-1000, 1000) + scale_y_log10() + theme_bw()
 ggsave("./Lenindelszoompangvsgen.png", plot= lenindels, device="png", width = 20, height = 15, units = "cm", dpi = 300)
-
-#Bonus plots
-#1. Quality
-myd = read.delim("qual_sites_gen.lqual", sep = "\t", skip = 1)
-colnames(myd) = c("chr", "pos", "qual")
-myd1 = read.delim("qual_sites_pan.lqual", sep = "\t", skip = 1)
-colnames(myd1) = c("chr", "pos", "qual")
-myd$Methods  <- "Genomic"
-myd1$Methods  <- "Pangenomic"
-h = rbind(myd,myd1)
-p <- ggplot(h, aes(qual, fill = Methods), position = "identity") + geom_density(alpha = 0.3) + xlim(20,1000) + theme_light()
-ggsave("./qualitypangvsgen.png", plot= lenindels, device="png", width = 20, height = 15, units = "cm", dpi = 300)
-
-#2. MAF
-myd = read.delim("freq_geno.frq", sep = "\t", skip = 1)
-colnames(myd) = c("chr", "pos", "nalleleles","nchr","a1","a2")
-myd$maf <- myd %>% select(a1,a2) %>% apply(1,function(z)min(z))
-myd1 = read.delim("freq_pan.frq", sep = "\t", skip = 1)
-colnames(myd1) = c("chr", "pos", "nalleleles","nchr","a1","a2")
-myd1$maf <- myd1 %>% select(a1,a2) %>% apply(1,function(z)min(z))
-myd$Methods  <- "Genomic"
-myd1$Methods  <- "Pangenomic"
-h = rbind(myd,myd1)
-a <- ggplot(h, aes(maf)) + geom_density(fill = "dodgerblue1", colour = "black", alpha = 0.3) + xlim(0.002, 0.8)
-x= a+ facet_grid(. ~ Methods) + theme_light()
-ggsave("./MAFpangvsgen.png", plot= lenindels, device="png", width = 20, height = 15, units = "cm", dpi = 300)
-
-#3. Inbreeding coefficients
-ind_het1 <- read_delim("het_gen.het", delim = "\t",col_names = c("ind","ho", "he", "nsites", "f"), skip = 1)
-a <- ggplot(ind_het1, aes(f)) + geom_histogram(fill = "dodgerblue1", colour = "black", alpha = 0.3) + theme_light()
-ggsave("./inbread.png", plot= lenindels, device="png", width = 20, height = 15, units = "cm", dpi = 300)
