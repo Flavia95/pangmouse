@@ -65,19 +65,18 @@ bcftools sort chr19_DBA2Jstrains.pan+ref.norm.decom.vcf chr19_DBA2Jstrains.pan+r
 vim chr19_DBA2Jstrains.pan+ref.norm.decom.sort.vcf  #%s/REF#chr19/chr19/g---> for change ID of Reference, for the statistics between genomic and pangenomic VCF, the IDs of reference should be the same.
 ```
 #### 5) I extracted only one sample from the pangenomic VCF, to compare better with the genomic VCF that contains only this sample
-
+```
 bcftools view -s DBA2J  chr19_DBA2Jstrains.pan+ref.norm.decom.sort.vcf > chr19_DBA2Jstrains.pan+ref.norm.decom.sort.onlyDBA2J.vcf
 bcftools view -c1 chr19_DBA2Jstrains.pan+ref.norm.decom.sort.onlyDBA2J.vcf > chr19_DBA2Jstrains.pan+ref.norm.decom.sort.onlyDBA2J.filter.vcf
-
+```
 #### 5) Stats on VCF files
 
 [statspnagvsgeno.sh](https://github.com/Flavia95/pangmouse/blob/main/script/statspangvsgeno.sh)
 
 [allstatistics.R](https://github.com/Flavia95/pangmouse/blob/main/script/allstatistics.R)
 
-
+---------------------------------------------------------------------------------------------------------------------------------------------------
 Other stats:
-*flaviav@penguin2:/home/flaviav/data/BXD/BXD005+BXD006_1M/variantcalling/stats*
 ```shell
 bcftools stats BXD005_BXD006.norm.uniq.decomp.vcf >BXD005_BXD006.stats
 plot-vcfstats -p outdir BXD005_BXD006.stats  #result-->outdir
