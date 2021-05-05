@@ -61,7 +61,7 @@ ff309f.891e76b.smooth.gfa > chr19_DBA2Jstrains.pan+ref.vcf
 
 bcftools norm --multiallelics -both -f /home/flaviav/data/BXD/UCSC_mm10_chr19_only.fa -o chr19_DBA2Jstrains.pan+ref.norm.decom.vcf chr19_DBA2Jstrains.pan+ref.v
 cf
-bcftools sort chr19_DBA2Jstrains.pan+ref.norm.decom.vcf chr19_DBA2Jstrains.pan+ref.norm.decom.sort.vcf
+bcftools sort chr19_DBA2Jstrains.pan+ref.norm.decom.vcf > chr19_DBA2Jstrains.pan+ref.norm.decom.sort.vcf
 vim chr19_DBA2Jstrains.pan+ref.norm.decom.sort.vcf  #%s/REF#chr19/chr19/g---> for change ID of Reference, for the statistics between genomic and pangenomic VCF, the IDs of reference should be the same.
 ```
 #### 5) I extracted only one sample from the pangenomic VCF, to compare better with the genomic VCF that contains only this sample
