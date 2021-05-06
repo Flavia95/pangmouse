@@ -65,6 +65,8 @@ bcftools sort chr19_DBA2Jstrains.pan+ref.norm.decom.vcf > chr19_DBA2Jstrains.pan
 vim chr19_DBA2Jstrains.pan+ref.norm.decom.sort.vcf  #%s/REF#chr19/chr19/g---> for change ID of Reference, for the statistics between genomic and pangenomic VCF, the IDs of reference should be the same.
 ```
 #### 5) I extracted only one sample from the pangenomic VCF, to compare better with the genomic VCF that contains only this sample. I removed sites with 0/0 and positions that have Ns as ALT and REF alleles.
+I checked the numbers of positions that have Ns with this: [numbersofNsfromVCFfiles.R](https://github.com/Flavia95/pangmouse/blob/main/script/checkvcfNs.R)
+
 ```
 bcftools view -s DBA2J  chr19_DBA2Jstrains.pan+ref.norm.decom.sort.vcf > chr19_DBA2Jstrains.pan+ref.norm.decom.sort.onlyDBA2J.vcf
 bcftools view -c1 chr19_DBA2Jstrains.pan+ref.norm.decom.sort.onlyDBA2J.vcf > chr19_DBA2Jstrains.pan+ref.norm.decom.sort.onlyDBA2J.filter.vcf
