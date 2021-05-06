@@ -64,10 +64,12 @@ cf
 bcftools sort chr19_DBA2Jstrains.pan+ref.norm.decom.vcf > chr19_DBA2Jstrains.pan+ref.norm.decom.sort.vcf
 vim chr19_DBA2Jstrains.pan+ref.norm.decom.sort.vcf  #%s/REF#chr19/chr19/g---> for change ID of Reference, for the statistics between genomic and pangenomic VCF, the IDs of reference should be the same.
 ```
-#### 5) I extracted only one sample from the pangenomic VCF, to compare better with the genomic VCF that contains only this sample
+#### 5) I extracted only one sample from the pangenomic VCF, to compare better with the genomic VCF that contains only this sample. I removed sites with 0/0 and positions that have Ns as ALT and REF alleles.
 ```
 bcftools view -s DBA2J  chr19_DBA2Jstrains.pan+ref.norm.decom.sort.vcf > chr19_DBA2Jstrains.pan+ref.norm.decom.sort.onlyDBA2J.vcf
 bcftools view -c1 chr19_DBA2Jstrains.pan+ref.norm.decom.sort.onlyDBA2J.vcf > chr19_DBA2Jstrains.pan+ref.norm.decom.sort.onlyDBA2J.filter.vcf
+awk '$5  $4 !~ /N/ {print $ALL}' chr19_DBA2Jstrains.pan+ref.norm.decom.sort.onlyDBA2J.filter.vcf > chr19_DBA2Jstrains.pan+ref.norm.decom.sort.onlyDBA2J.filter.withoutN.vcf
+
 ```
 #### 5) Stats on VCF files
 
