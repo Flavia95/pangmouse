@@ -23,18 +23,26 @@ MBG -i /home/flaviav/data/nanopore_parental/Supernovadenovo_raw/C57BL6J_supernov
 
 Graphs           | Nodes |Edges | Assembly size | N50       
 --------------| ----|---------|---------|------
-DBA2J |  |  
-C57BL6J | | 
+DBA2J (3.6 G) | 588,196 |  78,659 |3,767,966,689 bp | 8,484 |
+C57BL6J (4,2 G) |831,236 | 387,727 | 4,383,396,388 bp | 7,094 |
 
+- Aligned nanopore reads against graphs (obtained from the previous step)
 
-GRAPH FOR DBA2J:
-nodes: 588,196
-edges: 78,659
-assembly size 3,767,966,689 bp, N50 8484
-3.6 G
-GRAPH FOR C57BL6J:
-nodes: 831,236
-edges: 387,727
-assembly size 4,383,396,388 bp, N50 7094
+*flaviav@penguin2:/home/flaviav/data/nanopore_parental/MBG+GA*
+```shell
+GraphAligner -g DBA2J.gfa -f /home/flaviav/data/nanopore_parental/D/home/flaviav/data/nanopore_parental/nanopore_raw/DBA2J.changeid.fa --corrected-out DBA2J_corrected.fa -x dbg -t 3
+
+GraphAligner -g C57BL6J.gfa -f /home/flaviav/data/nanopore_parental/D/home/flaviav/data/nanopore_parental/nanopore_raw/C57BL_6J.changeid.fa --corrected-out C57BL6J_corrected.fa -x dbg -t 3
+```
+- Mapped corrected nanopore reads against whole reference genome
+
+*flaviav@penguin2:/home/flaviav/data/nanopore_parental/winnowmap*
+```shell
+winnowmap -W repetitive_k15.txt -ax map-ont UCSC_mm10.fa DBA2J_corrected.fa >DBA2J_corrected_winnow.sam
+winnowmap -W repetitive_k15.txt -ax map-ont UCSC_mm10.fa C57BL6J_corrected.fa >C57BL6J_corrected_winnow.sam
+```
+I extracted only chr19 and I converted sam files in fasta files.
+
+## 2. Evaluation of corrected reads
 
 
