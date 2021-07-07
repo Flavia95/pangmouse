@@ -47,7 +47,6 @@ vcf-sort 7_G01/m64247_210423_141129.SV.vcf > 7_G01/m64247_210423_141129.SV.sort.
 ```
 #### 6. Extracting only chr19 from VCF files keeping the header, using [vcftools](http://vcftools.sourceforge.net/man_latest.html)
 
-vcftools --vcf m64247_210429_111231.SV.sort.vcf --chr chr19 --out c --recode
 ```shell
 vcftools --vcf 3_C01/m64247_210429_111231.SV.sort.vcf --chr chr19 --out 3_C01/m64247_210429_111231.BXD032.SV.chr19 --recode
 vcftools --vcf 5_E01/m64247_210421_013840.SV.sort.vcf --chr chr19 --out 5_E01/m64247_210421_013840.BXD6.SV.chr19 --recode
