@@ -83,9 +83,9 @@ merging entries: 512
 *flaviav@penguin2:/home/flaviav/data/pacbio/merged_allstrains.sort.vcf.gz*
 
 #### 8. VCF file (merged_allstrains.sort.vcf.gz) annoteted, with [AnnotSV](https://github.com/lgmgeo/AnnotSV/blob/master/commandLineOptions.txt)
- 
+ ```shell
 ./AnnotSV -SVinputFile merged_allstrains.sort.vcf.gz -outputDir /home/flaviav/data/pacbio -genomeBuild mm10 -SVminSize 30
-
+```
 *flaviav@penguin2:/home/flaviav/data/pacbio/merged_allstrains.sort.annotated.tsv*
 
 #### 9. Comparison with VCF files obtained by LongRanger (10X technology)--> in progress
