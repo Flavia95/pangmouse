@@ -88,7 +88,22 @@ merging entries: 512
 ```
 *flaviav@penguin2:/home/flaviav/data/pacbio/merged_allstrains.sort.annotated.tsv*
 
-#### 9. Comparison with VCF files obtained by LongRanger (10X technology)--> in progress
+#### 9. Comparison with VCF files obtained by LongRanger (10X technology) and VCF files obtained by pacbio--> in progress
 This is an important step, because is not necessary look only the position for both VCF files, but if in the start1 and end1 for the first VCF file there is the SV in the other VCF.
-- I'm merging 4 VCF files obtained by LongRanger with Survivor.
-- I will use this https://github.com/zeeev/mergeSVcallers or SURVIVOR genComp to the comparison between pacbio VCF and 10X VCF files.
+
+- I extracted only chr19 from 4 longranger VCFs and I sorted these--> *flaviav@penguin2:/home/flaviav/data/pacbio/vcf_chr19longranger*
+- I tried the comparison between BXD006 (10X) and BXD006 (pacbio):
+
+VCF           | variants |BND |     
+--------------| ----|---------|
+PACBIO (chr19) | 529 |  17 |
+10X (chr19) | 651 | 602 | 
+
+*flaviav@penguin2:/home/flaviav/data/pacbio/10Xvspacbio_BXD032*
+
+```shell
+/home/flaviav/tools/mergeSVcallers/mergeSVcallers -a /home/flaviav/data/BXD/variantcalling_genomic/UCSC_mm10_chr19.fa -f /home/flaviav/data/pacbio/vcf_chr19lon
+granger/4512-JFI-0415_BXD032_TyJ_large_svs.chr19.sort.vcf.gz,/home/flaviav/data/pacbio/3_C01/m64247_210429_111231.BXD032.SV.chr19.vcf.gz -t 10X,pacbio -s 30 > merged.vcf
+```
+
+with this tool there is a limit (WARNING: BND events are skipped), we should change the tool.
