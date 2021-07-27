@@ -1,10 +1,10 @@
-#After normalized and genomic VCF 
-#bcftools norm --multiallelics -both -f /home/davida/UCSC_mm10.fa genomic.vcf -o Merged_gvcf_files_autosomes_Feb_2021_recalibrated_all_variants_PASSED.recode.norm.de.vcf Merged_gvcf_files_autosomes_Feb_2021_recalibrated_all_variants_PASSED.recode.vcf.gz
-
 echo "Genomic VCF: $1"
 
+#Normalized Genomic VCF
+bcftools norm --multiallelics -both -f /home/davida/UCSC_mm10.fa genomic.vcf -o Merged_gvcf_files_autosomes_Feb_2021_recalibrated_all_variants_PASSED.recode.norm.de.vcf $1
+
 #Reheader Genomic VCF
-bcftools reheader -s listrename.txt  $1 -o Merged_gvcf_files_autosomes_Feb_2021_recalibrated_all_variants_PASSED.reheader.vcf.gz
+bcftools reheader -s listrename.txt Merged_gvcf_files_autosomes_Feb_2021_recalibrated_all_variants_PASSED.recode.norm.de.vcf -o Merged_gvcf_files_autosomes_Feb_2021_recalibrated_all_variants_PASSED.reheader.vcf.gz
 
 #Remove spanning deletions
 zgrep -v "*" Merged_gvcf_files_autosomes_Feb_2021_recalibrated_all_variants_PASSED.reheader.vcf.gz | /home/flaviav/tools/bgzip > Merged_gvcf_files_autosomes_Feb_2021_recalibrated_all_variants_PASSED.filter.vcf.gz && /home/flaviav/tools/tabix Merged_gvcf_files_autosomes_Feb_2021_recalibrated_all_variants_PASSED.filter.vcf.gz
