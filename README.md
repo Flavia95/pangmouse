@@ -1,8 +1,8 @@
-# 10x technology assembly-pggb analysis pipeline
+# 10x technology-pggb analysis pipeline
 
 ## Data and preprocessing
 
-Apply name prefixes to the reference sequences and all samples:
+1. Apply name prefixes to the reference sequences and all samples:
 ```
 mkdir assemblies
 mkdir alignments
@@ -11,7 +11,7 @@ mkdir whole
 awk -F "::" '{if($1~">"){gsub(">","");print ">"$2"REF#"$1} else {print $0}}' UCSC_mm10.fa | grep -o ' ^\S*' > UCSC_mm10_changeid.fa #the same for all samples
 ```
 
-Partition the assembly contigs by chromosome by mapping each assembly against the scaffolded reference, and then subsetting the graph. Here we use [wfmash](https://github.com/ekg/wfmash) for the mapping.
+2. Partition the assembly contigs by chromosome by mapping each assembly against the scaffolded reference, and then subsetting the graph. Here we use [wfmash](https://github.com/ekg/wfmash) for the mapping.
 
 ```
 cd ..
@@ -26,7 +26,7 @@ done
 
 ```
 
-Subset by chromosome.
+3. Subset by chromosome.
 
 ```
 (seq 19; echo X; echo Y; echo M) | while read i; do awk '$6 ~ "chr'$i'$"' $(ls alignments/*.vs.ref.paf | sort -V) | cut -f 1 | sort -V >parts/chr$i.contigs; done
@@ -34,7 +34,7 @@ cat assemblies/*.fa > 148strains.fa
 (seq 19;echo X;echo Y;echo M) | while read i; do xargs samtools faidx assemblies/148strains.fa  < parts/chr$i.contigs > parts/chr$i.pan.fa; done
 ```
 
-Then we can merge the reference scaffold and contigs:
+4. Then we can merge the reference scaffold and contigs:
 
 ```
 (seq 19; echo X; echo Y; echo M) | while read i; do samtools faidx UCSC_mm10_changeid.fa REF#chr$i > UCSC_mm10_changeid.chr$i.fa && cat UCSC_mm10_changeid.chr$i.fa parts/chr$i.pan.fa > chr$i.pan+ref.fa; done
@@ -43,14 +43,26 @@ Then we can merge the reference scaffold and contigs:
 We will use these files directly in [pggb](https://github.com/pangenome/pggb).
 
 
-## graph generation
+## Graph generation
 
 We apply [pggb](https://github.com/pangenome/pggb) and variant calling, here an example for chr19.
 
 ```
-sbatch -p lowmem -c 48 --wrap 'cd /scratch && pggb -t 48 -i /lizardfs/flaviav/mouse/chr19.pan+ref.fa.gz -s 100000 -p 98 -n 70 -k 79 -B 10000000 -w 1000000 -G 13219,15331 -T 24 -P 1,19,39,3,81,1 -v -L  -V REF:sample.names -o /scratch/chr19.pan.mouse; mv /scratch/chr19.pan.mouse '$(pwd)
+sbatch -p lowmem -c 48 --wrap 'cd /scratch && pggb -t 48 -i /lizardfs/flaviav/mouse/chr19.pan+ref.fa.gz -s 100000 -p 98 -n 70 -k 79 -B 10000000 -w 1000000 -G 13219,15331 -T 24 -P 1,19,39,3,81,1 -v -L  -V REF:/lizardfs/flaviav/out/chr19.pan.mouse/sample.names -o /scratch/chr19.pan.mouse; mv /scratch/chr19.pan.mouse '$(pwd)
 ```
+Adjust pangenomic VCF with [adjustpangvcf.sh](script/adjustpangvcf.sh)
 
-## graph evaluation
+## Graph evaluation
+```
+mkdir evaluation
+```
+Prepare the reference genome:
+```
+rtg format -o ref.sdf /home/davida/UCSC_mm10.fa
+```
+Prepare the truth genomic set:
 
+./[adjustvcf.sh](script/adjustvcf.sh) genomic.vcf
+
+Run the evaluations. For example, for chromosome 19, run:
 
