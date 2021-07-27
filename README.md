@@ -62,7 +62,8 @@ rtg format -o ref.sdf /home/davida/UCSC_mm10.fa
 ```
 Prepare the truth genomic set:
 
-./[adjustvcf.sh](script/adjustvcf.sh) genomic.vcf
+[adjustvcf.sh](script/adjustvcf.sh) genomic.vcf
 
-Run the evaluations. For example, for chromosome 19, run:
+Run the evaluations. 
+Run:https://github.com/pangenome/HPRCyear1v2genbank/blob/main/evaluation/vcf_evaluation.sh
 
