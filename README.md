@@ -48,7 +48,7 @@ We will use these files directly in [pggb](https://github.com/pangenome/pggb).
 We apply [pggb](https://github.com/pangenome/pggb) and variant calling, here an example for chr19.
 
 ```
-sbatch -p lowmem -c 48 --wrap 'cd /scratch && pggb -t 48 -i /lizardfs/flaviav/mouse/chr19.pan+ref.fa.gz -s 100000 -p 98 -n 70 -k 79 -B 10000000 -w 1000000 -G 13219,15331 -T 24 -P 1,19,39,3,81,1 -v -L  -V REF:/lizardfs/flaviav/out/chr19.pan.mouse/sample.names -o /scratch/chr19.pan.mouse; mv /scratch/chr19.pan.mouse '$(pwd)
+sbatch -p lowmem -c 48 --wrap 'cd /scratch && pggb -t 48 -i /lizardfs/flaviav/mouse/chr19.pan+ref.fa.gz -s 100000 -p 98  -n 140 -k 229  -B 10000000 -w 1000000 -G 13219,15331 -T 24 -P 1,19,39,3,81,1 -v -L  -V REF:/lizardfs/flaviav/out/chr19.pan.mouse/sample.names -o /scratch/chr19.pan.mouse; mv /scratch/chr19.pan.mouse '$(pwd)
 ```
 Adjust pangenomic VCF with [adjustpangvcf.sh](script/adjustpangvcf.sh)
 
