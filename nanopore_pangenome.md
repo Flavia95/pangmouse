@@ -34,15 +34,19 @@ GraphAligner -g DBA2J.gfa -f /home/flaviav/data/nanopore_parental/D/home/flaviav
 
 GraphAligner -g C57BL6J.gfa -f /home/flaviav/data/nanopore_parental/D/home/flaviav/data/nanopore_parental/nanopore_raw/C57BL_6J.changeid.fa --corrected-out C57BL6J_corrected.fa -x dbg -t 3
 ```
-- Mapped corrected nanopore reads against whole reference genome
+## 2. Evaluation of corrected reads
+
+- Mapped corrected and raw nanopore reads against whole reference genome
 
 *flaviav@penguin2:/home/flaviav/data/nanopore_parental/winnowmap*
 ```shell
-winnowmap -W repetitive_k15.txt -ax map-ont UCSC_mm10.fa DBA2J_corrected.fa >DBA2J_corrected_winnow.sam
-winnowmap -W repetitive_k15.txt -ax map-ont UCSC_mm10.fa C57BL6J_corrected.fa >C57BL6J_corrected_winnow.sam
+- winnowmap -W repetitive_k15.txt -ax map-ont UCSC_mm10.fa DBA2J_corrected.fa >DBA2J_corrected_winnow.sam
+- winnowmap -W repetitive_k15.txt -ax map-ont UCSC_mm10.fa C57BL6J_corrected.fa >C57BL6J_corrected_winnow.sam
+- winnowmap -W repetitive_k15.txt -ax map-ont UCSC_mm10.fa nanopore_raw/DBA2J.changeid.fa > DBA2J_uncorrected_winnow.sam
+- winnowmap -W repetitive_k15.txt -ax map-ont UCSC_mm10.fa nanopore_raw/C57BL_6J.changeid.fa > C57BL6J_uncorrected_winnow.sam
 ```
-I extracted only chr19 and I converted sam files in fasta files.
+samtools stats: *flaviav@penguin2:/home/flaviav/data/nanopore_parental/stats_correctedreads*
 
-## 2. Evaluation of corrected reads
+## 3. Assembly with CANU
 
 
